@@ -5,7 +5,4 @@ services:
     build: .
     volumes:
       - .:/lab
-
-networks:
-  default:
-    driver: bridge   
+      

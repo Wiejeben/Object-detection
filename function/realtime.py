@@ -50,7 +50,7 @@ def realtime(args):
     countFrame = 0
     while True:
         # Capture frame-by-frame
-        ret = requests.get('http://192.168.43.213:5000/image.jpg') # TODO: Use variable for image URL
+        ret = requests.get('http://192.168.43.213:5000/image.jpg')
         frame = np.array(Image.open(BytesIO(ret.content)))
 
         countFrame = countFrame + 1
