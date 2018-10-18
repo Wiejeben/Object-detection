@@ -5,6 +5,9 @@ import argparse
 import multiprocessing
 from multiprocessing import Queue, Pool
 import cv2
+import requests
+from PIL import Image
+from io import BytesIO
 
 def realtime(args):
     """
@@ -26,15 +29,14 @@ def realtime(args):
     output_q = Queue(maxsize=args["queue_size"])
     pool = Pool(args["num_workers"], worker, (input_q,output_q))
     
-    # created a threaded video stream and start the FPS counter
-    vs = WebcamVideoStream(src=args["input_device"]).start()
+    # Start the FPS counter
     fps = FPS().start()
 
     # Define the output codec and create VideoWriter object
-    if args["output"]:
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter('outputs/{}.avi'.format(args["output_name"]),
-                              fourcc, vs.getFPS()/args["num_workers"], (vs.getWidth(), vs.getHeight()))
+    # if args["output"]:
+    #     fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    #     out = cv2.VideoWriter('outputs/{}.avi'.format(args["output_name"]),
+    #                           fourcc, vs.getFPS()/args["num_workers"], (vs.getWidth(), vs.getHeight()))
 
 
     # Start reading and treating the video stream
@@ -48,7 +50,9 @@ def realtime(args):
     countFrame = 0
     while True:
         # Capture frame-by-frame
-        ret, frame = vs.read()
+        ret = requests.get('http://192.168.43.213:5000/image.jpg') # TODO: Use variable for image URL
+        frame = np.array(Image.open(BytesIO(ret.content)))
+
         countFrame = countFrame + 1
         if ret:
             input_q.put(frame)
@@ -59,11 +63,11 @@ def realtime(args):
                 out.write(output_rgb)
         
             # Display the resulting frame
-            if args["display"]:
-                cv2.imshow('frame', output_rgb)
-                fps.update()
-            elif countFrame >= args["num_frames"]:
-                break
+            # if args["display"]:
+            #     cv2.imshow('frame', output_rgb)
+            #     fps.update()
+            # elif countFrame >= args["num_frames"]:
+            #     break
                 
         else:
             break
@@ -74,7 +78,7 @@ def realtime(args):
     # When everything done, release the capture
     fps.stop()
     pool.terminate()
-    vs.stop()
+    # vs.stop()
     if args["output"]:
         out.release()
     cv2.destroyAllWindows()

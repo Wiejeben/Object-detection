@@ -1,6 +1,5 @@
 from __future__ import print_function
 from function.realtime import *
-from function.video import *
 import argparse
 import os
 
@@ -16,8 +15,6 @@ if __name__ == '__main__':
 	            help="Whether or not frames should be displayed")
     ap.add_argument("-o", "--output", type=int, default=0,
 	            help="Whether or not modified videos shall be writen")
-    ap.add_argument("-on", "--output-name", type=str, default="output",
-	            help="Name of the output video file")
     ap.add_argument("-I", "--input-device", type=int, default=0,
 	            help="Device number input")
     ap.add_argument("-i", "--input-videos", type=str, default="",
@@ -30,10 +27,5 @@ if __name__ == '__main__':
                         default=0, help='Print logger debug')
     args = vars(ap.parse_args())
 
-    # Use realtime function if no video has been provided
-    if args['input_videos'] == "":
-        realtime(args)
-
-    # Use video function else
-    else:
-        video(args)
+    # Use realtime function
+    realtime(args)

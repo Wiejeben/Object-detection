@@ -54,3 +54,5 @@ Suggested numbers of workers and queues size:
 Inputs file are in inputs/ folder
 
 Outputs file are in outputs/ folder (.avi)
+
+<!-- brew cask install xquartz -->

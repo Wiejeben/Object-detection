@@ -39,6 +39,15 @@ def detect_objects(image_np, sess, detection_graph):
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
 
+    threshold = .5
+    objects = []
+    for index, value in enumerate(classes[0]):
+        object_dict = {}
+        if scores[0, index] > threshold:
+            object_dict[(category_index.get(value)).get('name').encode('utf8')] = scores[0, index]
+            objects.append(object_dict)
+    print(objects)
+
     # Visualization of the results of a detection.
     vis_util.visualize_boxes_and_labels_on_image_array(
         image_np,
