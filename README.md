@@ -1,6 +1,6 @@
 # Object-detection
 
-Apply tensorflow object detection on input video stream. One could use webcam (or any other device) stream or send a video file. It is possible to write Output put file with detection boxes.
+Apply Tensorflow object detection on input video stream. One could use webcam (or any other device) stream or send a video file. It is possible to write Output put file with detection boxes.
 
 # To use it:
 
@@ -8,15 +8,13 @@ Clone repo in your working directory
 
 Build docker image:
 
-> docker build -t realtime-objectdetection .
+> docker-compose build .
 
 Configure script (see bellow)
 
 Launch script:
 
-> bash runDocker.sh
-
-Volume (-v): Replace /home/leo/Documents/SandBox path by your local path to real time project.
+> docker-compose up
 
 # To configure it:
 
@@ -55,4 +53,3 @@ Inputs file are in inputs/ folder
 
 Outputs file are in outputs/ folder (.avi)
 
-<!-- brew cask install xquartz -->

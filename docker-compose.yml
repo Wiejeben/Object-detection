@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  detection:
+    build: .
+    volumes:
+      - .:/lab
+
+networks:
+  default:
+    driver: bridge   
